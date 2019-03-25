@@ -89,7 +89,7 @@ public class TouroScraper {
 	        {
 	        	String linkText = link.attr("abs:href");
 	        	
-	        	if(linkText.startsWith("https://www.touro.edu"))
+	        	if(linkText.matches("https?:\\/\\/www\\.(\\w+\\.)?touro\\.edu.*"))
 	        	{
 	        		if(!internalURLset.contains(linkText))
 	        		{
@@ -143,7 +143,7 @@ public class TouroScraper {
 		
 		while (!internalStack.isEmpty())
 	    {   
-			System.out.println("Searching #"+ numberOfURLsSearched++ +":" + currentURL);
+			System.out.println("Searching #"+ ++numberOfURLsSearched +": " + currentURL);
 	    	collectURLs(currentWebpage);
 	    	collectEmails(currentWebpage);
 	    	collectCSrelatedStuff(currentWebpage);
