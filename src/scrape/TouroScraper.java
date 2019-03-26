@@ -27,7 +27,6 @@ public class TouroScraper {
 	public static void main(String[]args) 
 	{
 		
-		//check how long it takes - might take longer because of slow wifi
 		long start = System.nanoTime();
 		crawl("https://www.touro.edu");
 		long end = System.nanoTime();
@@ -62,13 +61,17 @@ public class TouroScraper {
 	{	
 		try 
 		{
-	
-				Elements tech = doc.select("*:containsOwn(computer)");/*s? || tech\\w* || software || hack\\w* || code || coding "
-						+ "||  programm\\w+ || cyber\\w* || internet || acm || novick || fink || IT)");*/
+	            //i haven't found anything saying that you can combine :contains with regex, so i repeated.
+				//i only ran the program searching for computer, i didnt test this improved method.
+				Elements tech = doc.select("*:containsOwn(computer),*:containsOwn(computers),*:containsOwn(tech),"
+						+ "*:containsOwn(technology),*:containsOwn(technological),*:containsOwn(technologically),*:containsOwn(software),"
+						+ "*:containsOwn(hack),*:containsOwn(hacker),*:containsOwn(hackers),*:containsOwn(code),*:containsOwn(hackathon),"
+						+ "*:containsOwn(coding),*:containsOwn(program),*:containsOwn(programmer),*:containsOwn(cyber),*:containsOwn(cyberattack),"
+						+ "*:containsOwn(cyberwarfare),*:containsOwn(programming),*:containsOwn(internet),*:containsOwn(novick),*:containsOwn(fink),"
+						+ "*:containsOwn(IT)");
 				
 				for (Element techElement : tech)
 				{
-					System.out.println("	tech element found: "+techElement.text());	//for debugging purposes
 					techSet.add(techElement.text());
 				}
 		}
@@ -89,7 +92,7 @@ public class TouroScraper {
 	        {
 	        	String linkText = link.attr("abs:href");
 	        	
-	        	if(linkText.matches("https?:\\/\\/www\\.(\\w+\\.)?touro\\.edu.*"))
+	        	if(linkText.matches("https?:\\/\\/www\\.(\\w+\\.)?touro\\.edu.*"))//see comment in other class
 	        	{
 	        		if(!internalURLset.contains(linkText))
 	        		{

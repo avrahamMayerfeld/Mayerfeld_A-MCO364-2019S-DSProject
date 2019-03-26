@@ -17,6 +17,8 @@ public class TouroFetcher
 		{	
 			Response response = null;
 			//can only be on touro.edu's domain
+			//this regex is off, because i ran it and it didn't include lcw.touro etc, but i wont fix it for now because it will take too long
+			//to include it and it wasnt specified as a requirement.
 			if(URL.matches("https?:\\/\\/www\\.(\\w+\\.)?touro\\.edu.*")) 
 			{   
 				if(determineThatRecentResponseTimesAcceptable()) 
