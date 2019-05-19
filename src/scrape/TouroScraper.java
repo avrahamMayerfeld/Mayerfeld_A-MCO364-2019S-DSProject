@@ -61,14 +61,13 @@ public class TouroScraper {
 	{	
 		try 
 		{
-	            //i haven't found anything saying that you can combine :contains with regex, so i repeated.
-				//i only ran the program searching for computer, i didnt test this improved method.
-				Elements tech = doc.select("*:containsOwn(computer),*:containsOwn(computers),*:containsOwn(tech),"
-						+ "*:containsOwn(technology),*:containsOwn(technological),*:containsOwn(technologically),*:containsOwn(software),"
-						+ "*:containsOwn(hack),*:containsOwn(hacker),*:containsOwn(hackers),*:containsOwn(code),*:containsOwn(hackathon),"
-						+ "*:containsOwn(coding),*:containsOwn(program),*:containsOwn(programmer),*:containsOwn(cyber),*:containsOwn(cyberattack),"
-						+ "*:containsOwn(cyberwarfare),*:containsOwn(programming),*:containsOwn(internet),*:containsOwn(novick),*:containsOwn(fink),"
-						+ "*:containsOwn(IT)");
+	           	//i haven't found anything saying that you can combine :contains with regex, so i repeated.
+			Elements tech = doc.select("*:containsOwn(computer),*:containsOwn(computers),*:containsOwn(tech),"
+					+ "*:containsOwn(technology),*:containsOwn(technological),*:containsOwn(technologically),*:containsOwn(software),"
+					+ "*:containsOwn(hack),*:containsOwn(hacker),*:containsOwn(hackers),*:containsOwn(code),*:containsOwn(hackathon),"
+					+ "*:containsOwn(coding),*:containsOwn(program),*:containsOwn(programmer),*:containsOwn(cyber),*:containsOwn(cyberattack),"
+					+ "*:containsOwn(cyberwarfare),*:containsOwn(programming),*:containsOwn(internet),*:containsOwn(novick),*:containsOwn(fink),"
+					+ "*:containsOwn(IT)");
 				
 				for (Element techElement : tech)
 				{
@@ -145,17 +144,17 @@ public class TouroScraper {
 		internalURLset.add(URL);
 		
 		while (!internalStack.isEmpty())
-	    {   
+	    	{   
 			System.out.println("Searching #"+ ++numberOfURLsSearched +": " + currentURL);
-	    	collectURLs(currentWebpage);
-	    	collectEmails(currentWebpage);
-	    	collectCSrelatedStuff(currentWebpage);
-	    	 
-	    	currentURL = internalStack.pop();
-	    	currentWebpage = tf.getURLPage(currentURL);
+			collectURLs(currentWebpage);
+			collectEmails(currentWebpage);
+			collectCSrelatedStuff(currentWebpage);
+
+			currentURL = internalStack.pop();
+			currentWebpage = tf.getURLPage(currentURL);
 	    	
 	    	
-	    }
+	    	}
 		System.out.println("finished crawling.");
 	}               
 	
