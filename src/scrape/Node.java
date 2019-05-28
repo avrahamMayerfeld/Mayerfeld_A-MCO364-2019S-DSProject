@@ -74,12 +74,12 @@ public class Node {
 		{
 			LinkedList<Map.Entry<Node, Integer>> edgeList = new LinkedList<Map.Entry<Node, Integer>>(weightedAdjacents.entrySet()); 
 			Collections.sort(edgeList, new Comparator<Map.Entry<Node, Integer>>()
-		    { 
-		    	public int compare(Map.Entry<Node, Integer> o1, Map.Entry<Node, Integer> o2) 
-		        { 
-		    		return (o1.getValue()).compareTo(o2.getValue()); 
-		        } 
-		    }); 
+		    	{ 
+		    		public int compare(Map.Entry<Node, Integer> o1, Map.Entry<Node, Integer> o2) 
+		        	{ 
+		    			return (o1.getValue()).compareTo(o2.getValue()); 
+		        	} 
+		    	}); 
 		          
 		    return edgeList;
 		} 
