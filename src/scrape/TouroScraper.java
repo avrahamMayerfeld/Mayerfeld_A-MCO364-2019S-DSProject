@@ -40,7 +40,7 @@ public class TouroScraper {
 	private static LinkedHashSet<String> techSet = new LinkedHashSet<String>();
 	private static Stack<String> internalStack = new Stack<String>();
 	private static int numberOfURLsSearched = 0;
-    private static Runnable crawler = () -> crawl("https://www.touro.edu");
+    	private static Runnable crawler = () -> crawl("https://www.touro.edu");
    
 	public static void main(String[]args)  
 	{    
@@ -59,23 +59,25 @@ public class TouroScraper {
 		Thread t6 = new Thread(crawler);
 	
 		long start = System.nanoTime();
-			t1.start();
-		    t2.start();
-		    t3.start();
-		    t4.start();
-		    t5.start();
-		    t6.start();
+		t1.start();
+		t2.start();
+		t3.start();
+	        t4.start();
+		t5.start();
+		t6.start();
 		    
-			try 
-			{
-				t1.join();
-			    t2.join();
-			    t3.join();
-			    t4.join();
-			    t5.join();
-			    t6.join();
-			}catch(Exception e) {System.out.println(e.getMessage());}
-	    System.out.println("finished crawling.");
+		try 
+		{
+			t1.join();
+			t2.join();
+			t3.join();
+			t4.join();
+			t5.join();
+			t6.join();
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+	    	System.out.println("finished crawling.");
 		long end = System.nanoTime();
 		long elapsedTime = end - start;
 		long minutes = (elapsedTime / 1000000000/60);
@@ -140,28 +142,28 @@ public class TouroScraper {
 			try 
 			{
 				for (Element link : links) 
-		        {
-		        	String linkText = link.attr("abs:href");
+		        	{
+		        		String linkText = link.attr("abs:href");
 		        	
-		        	if(linkText.matches("https?:\\/\\/www\\.(\\w+\\.)?touro\\.edu.*"))//see comment in other class
-		        	{
-		        		if(!internalURLset.contains(linkText))
-		        		{
-		        			System.out.println("	Pushing onto stack: "+linkText);//for debugging purposes
-		        			internalStack.push(linkText);
-		        			internalURLset.add(linkText);
-		        			//++numberOfURLsSearched;
-		        		}
+					if(linkText.matches("https?:\\/\\/www\\.(\\w+\\.)?touro\\.edu.*"))//see comment in other class
+					{
+						if(!internalURLset.contains(linkText))
+						{
+							System.out.println("	Pushing onto stack: "+linkText);//for debugging purposes
+							internalStack.push(linkText);
+							internalURLset.add(linkText);
+							//++numberOfURLsSearched;
+						}
+					}
+					else
+					{
+						externalURLset.add(linkText);
+					}
 		        	}
-		        	else
-		        	{
-		        		externalURLset.add(linkText);
-		        	}
-		        }
 			}
-		    catch(Exception e)
+		        catch(Exception e)
 			{
-		    	System.out.println(e.getMessage());
+		    		System.out.println(e.getMessage());
 			}
             
 			
@@ -176,7 +178,7 @@ public class TouroScraper {
 			Matcher matcher = p.matcher(doc.text());
 			while (matcher.find()) 
 			{
-			   emailSet.add(matcher.group());
+				emailSet.add(matcher.group());
 			}
 		}
 		catch(Exception e) 
@@ -220,7 +222,7 @@ public class TouroScraper {
 		
 		//sort vertices on value
 		LinkedList<Entry<Node,Integer>> verticesToSort = new LinkedList<>(vertices.entrySet());
-        verticesToSort.sort(Entry.comparingByValue());
+        	verticesToSort.sort(Entry.comparingByValue());
         
 		while(!verticesToSort.isEmpty())
 		{	
@@ -235,12 +237,12 @@ public class TouroScraper {
 			{
 				Node entryKey = it.next().getKey();
 			    
-			    if( entryKey.equals(currentNode) ||  
+			    	if( entryKey.equals(currentNode) ||  
 			    		(entryKey.getParent().equals(currentNode) 
 			    					&& entryKey.equals(currentNode.getKey().getParent())) )
-			    {
-			    	validEntry = false;
-			    }
+			    	{
+			    		validEntry = false;
+			    	}
 			}
 			if(validEntry)
 				addedNodes.add(currentNode);   
@@ -273,39 +275,39 @@ public class TouroScraper {
 	public static void MSTBFScollectURLs(String URL) 
 	{
 		
-        try 
+        	try 
 		{
-        	Document currentWebpage = tf.getURLPage(URL);
-    		Elements links = currentWebpage.select("a[href]");
-    		Node node = new Node(URL);
-        	for (Element link : links) 
-	        {
-	        	String linkText = link.attr("abs:href");
-	        	int w8 = 0;
-	        	if(linkText.matches("https?:\\/\\/www\\.(\\w+\\.)?touro\\.edu.*"))
-	        	{
-	        		if(!urlSet.contains(linkText) && nodeCount < mstNodes)
-	        		{
-	        			w8 = Math.abs( URL.length() - linkText.length() ) +1;
-	        			urlQueue.add(linkText);
-	        			urlSet.add(linkText);
-	        			Node node2 = new Node(linkText);
-	        			node.addEdge(node2, w8);
-	        			node2.addEdge(node, w8);
-	        			nodeCount ++;
-	        			vertices.remove(node2);
-	                	vertices.put(node2,w8);
-	                    
-	                	vertices.remove(node);
-	    	        	vertices.put(node,w8);
-	        		}
-	        	}
-	        	
+			Document currentWebpage = tf.getURLPage(URL);
+			Elements links = currentWebpage.select("a[href]");
+			Node node = new Node(URL);
+			for (Element link : links) 
+			{
+				String linkText = link.attr("abs:href");
+				int w8 = 0;
+				if(linkText.matches("https?:\\/\\/www\\.(\\w+\\.)?touro\\.edu.*"))
+				{
+					if(!urlSet.contains(linkText) && nodeCount < mstNodes)
+					{
+						w8 = Math.abs( URL.length() - linkText.length() ) +1;
+						urlQueue.add(linkText);
+						urlSet.add(linkText);
+						Node node2 = new Node(linkText);
+						node.addEdge(node2, w8);
+						node2.addEdge(node, w8);
+						nodeCount ++;
+						vertices.remove(node2);
+						vertices.put(node2,w8);
+
+						vertices.remove(node);
+						vertices.put(node,w8);
+					}
+				}
+
 			}
-	    }
-        catch(Exception e)
+	    	}
+        	catch(Exception e)
 		{
-	    	System.out.println(e.getMessage());
+	    		System.out.println(e.getMessage());
 		}
 	}
 	
