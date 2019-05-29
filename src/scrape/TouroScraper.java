@@ -40,16 +40,17 @@ public class TouroScraper {
 	private static LinkedHashSet<String> techSet = new LinkedHashSet<String>();
 	private static Stack<String> internalStack = new Stack<String>();
 	private static int numberOfURLsSearched = 0;
-    	private static Runnable crawler = () -> crawl("https://www.touro.edu");
+    private static Runnable crawler = () -> crawl("https://www.touro.edu");
    
 	public static void main(String[]args)  
 	{    
 		//ask user for input before program runs, to ensure proper functioning
 		Scanner keyboard = new Scanner(System.in);
 		System.out.println("Enter the number of urls for the MST.");
-		mstNodes = keyboard.nextInt();
+		mstNodes = Integer.parseInt(keyboard.nextLine());
 		System.out.println("Enter a starting url for the MST");
 		MST_URL = keyboard.nextLine();
+	
 		Thread t1 = new Thread(crawler);
 		Thread t2 = new Thread(crawler);
 		Thread t3 = new Thread(crawler);
@@ -58,22 +59,23 @@ public class TouroScraper {
 		Thread t6 = new Thread(crawler);
 	
 		long start = System.nanoTime();
-		    t1.start();
+			t1.start();
 		    t2.start();
 		    t3.start();
 		    t4.start();
 		    t5.start();
 		    t6.start();
+		    
 			try 
 			{
-			    t1.join();
+				t1.join();
 			    t2.join();
 			    t3.join();
 			    t4.join();
 			    t5.join();
 			    t6.join();
 			}catch(Exception e) {System.out.println(e.getMessage());}
-	    	System.out.println("finished crawling.");
+	    System.out.println("finished crawling.");
 		long end = System.nanoTime();
 		long elapsedTime = end - start;
 		long minutes = (elapsedTime / 1000000000/60);
@@ -159,7 +161,7 @@ public class TouroScraper {
 			}
 		    catch(Exception e)
 			{
-		    		System.out.println(e.getMessage());
+		    	System.out.println(e.getMessage());
 			}
             
 			
@@ -218,7 +220,7 @@ public class TouroScraper {
 		
 		//sort vertices on value
 		LinkedList<Entry<Node,Integer>> verticesToSort = new LinkedList<>(vertices.entrySet());
-        	verticesToSort.sort(Entry.comparingByValue());
+        verticesToSort.sort(Entry.comparingByValue());
         
 		while(!verticesToSort.isEmpty())
 		{	
@@ -233,12 +235,12 @@ public class TouroScraper {
 			{
 				Node entryKey = it.next().getKey();
 			    
-			    	if( entryKey.equals(currentNode) ||  
+			    if( entryKey.equals(currentNode) ||  
 			    		(entryKey.getParent().equals(currentNode) 
 			    					&& entryKey.equals(currentNode.getKey().getParent())) )
-			    	{
-			    		validEntry = false;
-			    	}
+			    {
+			    	validEntry = false;
+			    }
 			}
 			if(validEntry)
 				addedNodes.add(currentNode);   
@@ -251,8 +253,7 @@ public class TouroScraper {
 			System.out.println(entry.getKey().getParent().getName() + " --- "+entry.getValue()
 			+ " --- "+entry.getKey().getName());
 		}
-		//Indicate in your submission where the code can be found in your project.*/
-		//Node,  calls createMST after crawling,which calls other methods found at the bottom of the code.
+		
 	}
 	
 	public static void MSTBFScrawl(String URL) 
@@ -271,40 +272,41 @@ public class TouroScraper {
 	
 	public static void MSTBFScollectURLs(String URL) 
 	{
-		Document currentWebpage = tf.getURLPage(URL);
-		Elements links = currentWebpage.select("a[href]");
-		Node node = new Node(URL);
-        	try 
+		
+        try 
 		{
-        		for (Element link : links) 
+        	Document currentWebpage = tf.getURLPage(URL);
+    		Elements links = currentWebpage.select("a[href]");
+    		Node node = new Node(URL);
+        	for (Element link : links) 
+	        {
+	        	String linkText = link.attr("abs:href");
+	        	int w8 = 0;
+	        	if(linkText.matches("https?:\\/\\/www\\.(\\w+\\.)?touro\\.edu.*"))
 	        	{
-	        		String linkText = link.attr("abs:href");
-	        		int w8 = 0;
-	        		if(linkText.matches("https?:\\/\\/www\\.(\\w+\\.)?touro\\.edu.*"))
+	        		if(!urlSet.contains(linkText) && nodeCount < mstNodes)
 	        		{
-	        			if(!urlSet.contains(linkText) && nodeCount < mstNodes)
-	        			{
-						w8 = Math.abs( URL.length() - linkText.length() ) +1;
-						urlQueue.add(linkText);
-						urlSet.add(linkText);
-						Node node2 = new Node(linkText);
-						node.addEdge(node2, w8);
-						node2.addEdge(node, w8);
-						nodeCount ++;
-						vertices.remove(node2);
-	                			vertices.put(node2,w8);
+	        			w8 = Math.abs( URL.length() - linkText.length() ) +1;
+	        			urlQueue.add(linkText);
+	        			urlSet.add(linkText);
+	        			Node node2 = new Node(linkText);
+	        			node.addEdge(node2, w8);
+	        			node2.addEdge(node, w8);
+	        			nodeCount ++;
+	        			vertices.remove(node2);
+	                	vertices.put(node2,w8);
 	                    
-	                			vertices.remove(node);
-	    	        			vertices.put(node,w8);
-	        			}
+	                	vertices.remove(node);
+	    	        	vertices.put(node,w8);
 	        		}
+	        	}
 	        	
 			}
 	    }
-            catch(Exception e)
-	    {
+        catch(Exception e)
+		{
 	    	System.out.println(e.getMessage());
-	    }
+		}
 	}
 	
 	
